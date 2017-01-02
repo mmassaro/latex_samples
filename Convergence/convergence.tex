@@ -1,0 +1,96 @@
+% vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={{{,}}} foldlevel=0 foldmethod=marker:
+%
+%                                   _      _
+%                   _o)   __ _  ___/ /__ _/ /_  __ _  (o_
+%%%%%%%%%%%%%%%%%   /\\  /  ' \/ _  / _ `/ _  \/  ' \ //\   %%%%%%%%%%%%%%%%%%
+%                   \_v /_/_/_/\_,_/\_, /_/ /_/_/_/_/ v_/
+%                                  /___/
+%
+% Author:       Michel Massaro
+% Version :     V1.0
+% Date :        02/01/17
+% Description : Sample to draw the convergence rates
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,11pt,twoside,openright]{report}
+
+\usepackage{tikz}
+\usepackage{pgfplots,pgfplotstable}
+
+\begin{document}
+
+\pgfplotstableread{
+  324 0.036491
+  702 0.024439
+  1632 0.016144
+  3294 0.010696
+}\tableA
+
+\pgfplotstableread{
+  324 0.014013
+  702 0.007208
+  1632 0.003519
+  3294 0.001967
+}\tableB
+
+\pgfplotstableread{
+  324  0.009830
+  702  0.003966
+  1632 0.002455
+  3294 0.001485
+}\tableC
+
+
+\begin{figure}[h!]
+  \centering
+
+  \begin{tikzpicture}
+    \begin{loglogaxis}[
+        xlabel={x},
+      ylabel={y},
+      xmin=300, xmax=3300,
+      ymin=0,  ymax=0.04,
+      width=0.8\columnwidth,
+      /pgfplots/log ticks with fixed point,
+      /pgfplots/ytick={0, 0.01,..., 0.04}
+    ]
+      \addplot[only marks, red] table {\tableA};
+      \addplot[red] 
+        table [y={create col/linear regression={y=1}}] {\tableA}
+        coordinate[pos=0.25] (A)
+        coordinate[pos=0.4] (B);
+        \xdef\slopA{\pgfplotstableregressiona}%
+        \draw (A)-|(B)
+          node[pos=0.25,anchor=south] {1}
+          node[pos=0.75, anchor=west] {\pgfmathprintnumber{\slopA}};
+
+      \addplot[only marks, blue] table {\tableB};
+      \addplot[blue] 
+        table [y={create col/linear regression={y=1}}] {\tableB}
+        coordinate[pos=0.25] (A)
+        coordinate[pos=0.4] (B);
+        \xdef\slopB{\pgfplotstableregressiona}%
+        \draw (A)-|(B)
+          node[pos=0.25,anchor=south] {1}
+          node[pos=0.75, anchor=west] {\pgfmathprintnumber{\slopB}};
+
+      \addplot[only marks, green] table {\tableC};
+      \addplot[green] 
+        table [y={create col/linear regression={y=1}}] {\tableC}
+        coordinate[pos=0.25] (A)
+        coordinate[pos=0.4] (B);
+        \xdef\slopC{\pgfplotstableregressiona}%
+        \draw (A)-|(B)
+          node[pos=0.25,anchor=south] {1}
+          node[pos=0.75, anchor=west] {\pgfmathprintnumber{\slopC}};
+
+      \legend{,Curve 1,,Curve 2,,Curve 3}
+
+    \end{loglogaxis}
+  \end{tikzpicture}
+  \caption{Convergence rate.}
+  \label{fig:fig-label}
+\end{figure}
+
+\end{document}
