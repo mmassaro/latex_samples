@@ -93,6 +93,8 @@
 \RequirePackage{ifthen}
 \RequirePackage[final]{pdfpages}    % Include First and last page
 
+\RequirePackage{lipsum}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                Some configurations                         %
